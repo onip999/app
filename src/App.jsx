@@ -114,7 +114,7 @@ export default function App() {
       <div className="app-shell">
         <header className="topbar">
           <button className="brand-button" onClick={() => setSelectedProduct(null)}>
-            Confronta Prezzi
+            PricePilot
           </button>
           <span className="demo-pill">MVP</span>
         </header>
@@ -165,7 +165,7 @@ export default function App() {
   return (
     <div className="app-shell">
       <header className="topbar">
-        <div className="brand">Confronta Prezzi</div>
+        <div className="brand">PricePilot</div>
         <span className="demo-pill">MVP</span>
       </header>
 

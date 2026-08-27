@@ -1,4 +1,4 @@
-# Confronta Prezzi v1
+# PricePilot
 
 Questa è la ripartenza pulita del progetto.
 
