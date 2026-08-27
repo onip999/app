@@ -45,3 +45,4 @@ on conflict (product_id, store_id) do update set
   availability = excluded.availability,
   product_url = excluded.product_url,
   updated_at = now();
+

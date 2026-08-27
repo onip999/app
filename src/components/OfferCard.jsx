@@ -56,3 +56,4 @@ export default function OfferCard({ offer, isBest, onOpenStore }) {
     </article>
   )
 }
+

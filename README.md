@@ -126,3 +126,4 @@ Controlla:
 Per ora il modo più semplice è usare il Table Editor di Supabase.
 
 Nella cartella `data` trovi anche file CSV di esempio.
+

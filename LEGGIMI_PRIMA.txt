@@ -14,3 +14,4 @@ NON SOVRASCRIVERE IL VECCHIO PROGETTO.
 
 Se Supabase non è ancora configurato, il sito NON si rompe:
 mostra automaticamente i dati demo.
+

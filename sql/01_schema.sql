@@ -77,3 +77,4 @@ with check (true);
 -- IMPORTANTE:
 -- Non esiste una policy SELECT su clicks.
 -- Quindi i visitatori non possono leggere le statistiche dei click.
+
