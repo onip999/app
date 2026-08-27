@@ -1,0 +1,16 @@
+PRIMA DI FARE QUALSIASI COSA
+
+QUESTO È UN PROGETTO NUOVO.
+
+NON SOVRASCRIVERE IL VECCHIO PROGETTO.
+
+1. Crea un NUOVO repository GitHub.
+2. Carica questo progetto.
+3. Esegui i 2 file SQL su Supabase.
+4. Crea su Vercel le variabili:
+   VITE_SUPABASE_URL
+   VITE_SUPABASE_ANON_KEY
+5. Importa il nuovo repository su Vercel.
+
+Se Supabase non è ancora configurato, il sito NON si rompe:
+mostra automaticamente i dati demo.

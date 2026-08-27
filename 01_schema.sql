@@ -1,0 +1,2 @@
+brand,name,category,description,image_url
+Marca,Nome Prodotto,Elettronica,Descrizione,

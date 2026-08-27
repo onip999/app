@@ -1,0 +1,79 @@
+-- ESEGUI QUESTO FILE PER PRIMO NEL SQL EDITOR DI SUPABASE
+
+create extension if not exists pgcrypto;
+
+create table if not exists public.stores (
+  id uuid primary key default gen_random_uuid(),
+  name text not null unique,
+  website_url text,
+  logo_url text,
+  return_days integer check (return_days is null or return_days >= 0),
+  warranty_months integer check (warranty_months is null or warranty_months >= 0),
+  shipping_notes text,
+  created_at timestamptz not null default now()
+);
+
+create table if not exists public.products (
+  id uuid primary key default gen_random_uuid(),
+  brand text not null,
+  name text not null,
+  category text not null,
+  description text,
+  image_url text,
+  created_at timestamptz not null default now()
+);
+
+create table if not exists public.offers (
+  id uuid primary key default gen_random_uuid(),
+  product_id uuid not null references public.products(id) on delete cascade,
+  store_id uuid not null references public.stores(id) on delete cascade,
+  price numeric(10,2) not null check (price >= 0),
+  shipping_cost numeric(10,2) not null default 0 check (shipping_cost >= 0),
+  availability text,
+  product_url text not null,
+  updated_at timestamptz not null default now(),
+  unique (product_id, store_id)
+);
+
+create table if not exists public.clicks (
+  id uuid primary key default gen_random_uuid(),
+  offer_id uuid references public.offers(id) on delete set null,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists offers_product_id_idx on public.offers(product_id);
+create index if not exists offers_store_id_idx on public.offers(store_id);
+create index if not exists clicks_offer_id_idx on public.clicks(offer_id);
+
+alter table public.stores enable row level security;
+alter table public.products enable row level security;
+alter table public.offers enable row level security;
+alter table public.clicks enable row level security;
+
+drop policy if exists public_read_stores on public.stores;
+create policy public_read_stores
+on public.stores
+for select
+using (true);
+
+drop policy if exists public_read_products on public.products;
+create policy public_read_products
+on public.products
+for select
+using (true);
+
+drop policy if exists public_read_offers on public.offers;
+create policy public_read_offers
+on public.offers
+for select
+using (true);
+
+drop policy if exists public_insert_clicks on public.clicks;
+create policy public_insert_clicks
+on public.clicks
+for insert
+with check (true);
+
+-- IMPORTANTE:
+-- Non esiste una policy SELECT su clicks.
+-- Quindi i visitatori non possono leggere le statistiche dei click.

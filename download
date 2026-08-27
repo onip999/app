@@ -1,0 +1,19 @@
+export default function ProductVisual({ product }) {
+  if (product.image_url) {
+    return (
+      <img
+        className="product-image"
+        src={product.image_url}
+        alt={`${product.brand} ${product.name}`}
+      />
+    )
+  }
+
+  const initials = `${product.brand?.[0] || ''}${product.name?.[0] || ''}`.toUpperCase()
+
+  return (
+    <div className="product-placeholder" aria-label={`${product.brand} ${product.name}`}>
+      {initials || 'P'}
+    </div>
+  )
+}
