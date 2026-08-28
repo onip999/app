@@ -7,9 +7,31 @@ function totalPrice(offer) {
   return Number(offer.price || 0) + Number(offer.shipping_cost || 0)
 }
 
+function recommendationReason(offer, isCheapest, isRecommended) {
+  if (!isRecommended) return ''
+
+  const store = offer.stores || {}
+  const reasons = []
+
+  if (Number(offer.shipping_cost || 0) === 0) reasons.push('spedizione inclusa')
+  if (Number(store.return_days || 0) >= 30) reasons.push(`reso ${store.return_days} giorni`)
+  if (Number(store.warranty_months || 0) >= 24) reasons.push(`garanzia ${store.warranty_months} mesi`)
+
+  if (isCheapest) {
+    return reasons.length
+      ? `È anche la più economica e offre ${reasons.join(', ')}.`
+      : 'È l’offerta più economica e ottiene anche il miglior punteggio complessivo.'
+  }
+
+  return reasons.length
+    ? `Costa un po’ di più, ma offre ${reasons.join(', ')}.`
+    : 'Non è la più economica, ma offre il miglior equilibrio complessivo tra prezzo e condizioni.'
+}
+
 export default function OfferCard({ offer, isCheapest, isRecommended, score, onOpenStore }) {
   const store = offer.stores
   const shipping = Number(offer.shipping_cost || 0)
+  const reason = recommendationReason(offer, isCheapest, isRecommended)
 
   return (
     <article className={`offer-card ${isRecommended ? 'recommended' : ''}`}>
@@ -36,6 +58,13 @@ export default function OfferCard({ offer, isCheapest, isRecommended, score, onO
           <span className="score">Convenienza <b>{score}/10</b></span>
         </div>
       </div>
+
+      {reason && (
+        <div className="recommendation-reason">
+          <span>Perché conviene</span>
+          <strong>{reason}</strong>
+        </div>
+      )}
 
       <div className="policy-grid">
         <div>
