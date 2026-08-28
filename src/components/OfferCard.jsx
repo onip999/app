@@ -3,6 +3,14 @@ const money = new Intl.NumberFormat('it-IT', {
   currency: 'EUR',
 })
 
+const dateTime = new Intl.DateTimeFormat('it-IT', {
+  day: '2-digit',
+  month: 'short',
+  year: 'numeric',
+  hour: '2-digit',
+  minute: '2-digit',
+})
+
 function totalPrice(offer) {
   return Number(offer.price || 0) + Number(offer.shipping_cost || 0)
 }
@@ -32,6 +40,7 @@ export default function OfferCard({ offer, isCheapest, isRecommended, score, onO
   const store = offer.stores
   const shipping = Number(offer.shipping_cost || 0)
   const reason = recommendationReason(offer, isCheapest, isRecommended)
+  const updatedAt = offer.updated_at ? dateTime.format(new Date(offer.updated_at)) : null
 
   return (
     <article className={`offer-card ${isRecommended ? 'recommended' : ''}`}>
@@ -45,6 +54,7 @@ export default function OfferCard({ offer, isCheapest, isRecommended, score, onO
           <p className="availability">
             {offer.availability || 'Disponibilità non indicata'}
           </p>
+          {updatedAt && <p className="updated-at">Prezzo aggiornato il {updatedAt}</p>}
         </div>
 
         <div className="price-box">
@@ -87,3 +97,4 @@ export default function OfferCard({ offer, isCheapest, isRecommended, score, onO
     </article>
   )
 }
+
