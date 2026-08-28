@@ -6,15 +6,30 @@ import ProductVisual from './components/ProductVisual.jsx'
 import OfferCard from './components/OfferCard.jsx'
 import SetupNotice from './components/SetupNotice.jsx'
 
+function totalPrice(offer) {
+  return Number(offer.price || 0) + Number(offer.shipping_cost || 0)
+}
+
 function sortOffers(products) {
   return products.map((product) => ({
     ...product,
-    offers: [...(product.offers || [])].sort((a, b) => {
-      const aTotal = Number(a.price || 0) + Number(a.shipping_cost || 0)
-      const bTotal = Number(b.price || 0) + Number(b.shipping_cost || 0)
-      return aTotal - bTotal
-    }),
+    offers: [...(product.offers || [])].sort((a, b) => totalPrice(a) - totalPrice(b)),
   }))
+}
+
+function convenienceScore(offer, offers) {
+  const totals = offers.map(totalPrice)
+  const min = Math.min(...totals)
+  const max = Math.max(...totals)
+  const total = totalPrice(offer)
+  const priceScore = max === min ? 10 : 10 - ((total - min) / (max - min)) * 3
+  const store = offer.stores || {}
+  const returnScore = Math.min(Number(store.return_days || 0) / 30, 1) * 1.2
+  const warrantyScore = Math.min(Number(store.warranty_months || 0) / 24, 1) * 1.2
+  const shippingScore = Number(offer.shipping_cost || 0) === 0 ? 0.6 : 0
+  const availabilityScore = /disponibile|pronta|immediata/i.test(offer.availability || '') ? 0.4 : 0
+
+  return Math.min(10, Math.round((priceScore * 0.66 + returnScore + warrantyScore + shippingScore + availabilityScore) * 10) / 10)
 }
 
 export default function App() {
@@ -110,13 +125,17 @@ export default function App() {
   }
 
   if (selectedProduct) {
+    const offers = selectedProduct.offers || []
+    const scoredOffers = offers.map((offer) => ({ offer, score: convenienceScore(offer, offers) }))
+    const recommendedId = scoredOffers.sort((a, b) => b.score - a.score)[0]?.offer?.id
+
     return (
       <div className="app-shell">
         <header className="topbar">
           <button className="brand-button" onClick={() => setSelectedProduct(null)}>
-            PricePilot
+            <span className="brand-mark">C</span> Comparing
           </button>
-          <span className="demo-pill">MVP</span>
+          <span className="demo-pill">BETA</span>
         </header>
 
         <main className="container">
@@ -136,21 +155,23 @@ export default function App() {
           <section>
             <div className="section-heading">
               <div>
-                <p className="eyebrow">CONFRONTO</p>
-                <h2>Prezzo e condizioni</h2>
+                <p className="eyebrow">CONFRONTA DAVVERO</p>
+                <h2>Prezzo più basso e miglior acquisto</h2>
               </div>
-              <span>{selectedProduct.offers?.length || 0} offerte</span>
+              <span>{offers.length} offerte</span>
             </div>
 
-            {!selectedProduct.offers?.length ? (
+            {!offers.length ? (
               <div className="empty-state">Nessuna offerta disponibile.</div>
             ) : (
               <div className="offers-list">
-                {selectedProduct.offers.map((offer, index) => (
+                {offers.map((offer, index) => (
                   <OfferCard
                     key={offer.id}
                     offer={offer}
-                    isBest={index === 0}
+                    isCheapest={index === 0}
+                    isRecommended={offer.id === recommendedId}
+                    score={convenienceScore(offer, offers)}
                     onOpenStore={openStore}
                   />
                 ))}
@@ -165,17 +186,21 @@ export default function App() {
   return (
     <div className="app-shell">
       <header className="topbar">
-        <div className="brand">PricePilot</div>
-        <span className="demo-pill">MVP</span>
+        <div className="brand"><span className="brand-mark">C</span> Comparing</div>
+        <span className="demo-pill">BETA</span>
       </header>
 
       <main className="container">
         <section className="intro">
-          <p className="eyebrow">PREZZO + CONDIZIONI</p>
-          <h1>Scegli l'offerta che conviene davvero.</h1>
+          <p className="eyebrow">CONFRONTA. CAPISCI. SCEGLI.</p>
+          <h1>Non trovare solo il prezzo più basso. Trova l'acquisto migliore.</h1>
           <p>
-            Confronta prezzo, spedizione, reso e garanzia in un'unica schermata.
+            Comparing mette insieme prezzo, spedizione, reso e garanzia per mostrarti sia l'offerta più economica sia quella che conviene davvero.
           </p>
+          <div className="value-pills">
+            <div><span>💰</span><strong>Prezzo più basso</strong><small>Il massimo risparmio</small></div>
+            <div><span>⭐</span><strong>Miglior acquisto</strong><small>La convenienza complessiva</small></div>
+          </div>
         </section>
 
         {!isSupabaseConfigured && <SetupNotice />}
@@ -192,7 +217,7 @@ export default function App() {
         <section className="toolbar">
           <input
             type="search"
-            placeholder="Cerca prodotto o marca…"
+            placeholder="Cerca smartphone, TV, scarpe, marca…"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
@@ -223,9 +248,8 @@ export default function App() {
       </main>
 
       <footer>
-        MVP gratuito · I dati demo servono solo per testare l'app
+        Comparing · Confronta meglio, scegli meglio
       </footer>
     </div>
   )
 }
-
