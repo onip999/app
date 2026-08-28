@@ -6,6 +6,7 @@ export const demoProducts = [
     category: 'Elettronica',
     description: 'Cuffie wireless leggere con autonomia elevata.',
     image_url: '',
+    price_history: [49.99, 47.99, 45.99, 44.99, 42.99, 39.99],
     offers: [
       {
         id: 'demo-offer-sony-1',
@@ -14,13 +15,7 @@ export const demoProducts = [
         availability: 'Disponibile',
         product_url: 'https://www.mediaworld.it',
         updated_at: new Date().toISOString(),
-        stores: {
-          id: 'demo-store-1',
-          name: 'MediaWorld',
-          return_days: 14,
-          warranty_months: 24,
-          shipping_notes: '2-4 giorni',
-        },
+        stores: { id: 'demo-store-1', name: 'MediaWorld', return_days: 14, warranty_months: 24, shipping_notes: '2-4 giorni' },
       },
       {
         id: 'demo-offer-sony-2',
@@ -29,13 +24,7 @@ export const demoProducts = [
         availability: 'Disponibile',
         product_url: 'https://www.unieuro.it',
         updated_at: new Date().toISOString(),
-        stores: {
-          id: 'demo-store-2',
-          name: 'Unieuro',
-          return_days: 14,
-          warranty_months: 24,
-          shipping_notes: '3-5 giorni',
-        },
+        stores: { id: 'demo-store-2', name: 'Unieuro', return_days: 14, warranty_months: 24, shipping_notes: '3-5 giorni' },
       },
     ],
   },
@@ -46,6 +35,7 @@ export const demoProducts = [
     category: 'Abbigliamento',
     description: 'Esempio per mostrare il confronto anche nel settore moda.',
     image_url: '',
+    price_history: [74.99, 76.99, 72.99, 77.99, 75.99, 79.99],
     offers: [
       {
         id: 'demo-offer-nike-1',
@@ -54,13 +44,7 @@ export const demoProducts = [
         availability: 'Disponibile',
         product_url: 'https://www.zalando.it',
         updated_at: new Date().toISOString(),
-        stores: {
-          id: 'demo-store-3',
-          name: 'Zalando',
-          return_days: 30,
-          warranty_months: 24,
-          shipping_notes: '2-5 giorni',
-        },
+        stores: { id: 'demo-store-3', name: 'Zalando', return_days: 30, warranty_months: 24, shipping_notes: '2-5 giorni' },
       },
       {
         id: 'demo-offer-nike-2',
@@ -69,15 +53,8 @@ export const demoProducts = [
         availability: 'Disponibile',
         product_url: 'https://www.ovs.it',
         updated_at: new Date().toISOString(),
-        stores: {
-          id: 'demo-store-4',
-          name: 'OVS',
-          return_days: 30,
-          warranty_months: 24,
-          shipping_notes: '3-6 giorni',
-        },
+        stores: { id: 'demo-store-4', name: 'OVS', return_days: 30, warranty_months: 24, shipping_notes: '3-6 giorni' },
       },
     ],
   },
 ]
-
