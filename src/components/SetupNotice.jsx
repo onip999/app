@@ -1,12 +1,10 @@
 export default function SetupNotice() {
   return (
     <section className="notice">
-      <strong>Modalità demo</strong>
+      <strong>Anteprima pubblica</strong>
       <span>
-        Supabase non è ancora collegato. L'interfaccia funziona con dati demo.
-        Quando aggiungi le due variabili Vercel, userà automaticamente il database.
+        Stai esplorando una selezione dimostrativa. Le offerte reali e aggiornate verranno collegate progressivamente.
       </span>
     </section>
   )
 }
-
