@@ -38,7 +38,7 @@ function priceInsight(product) {
   return { current, average, historicalMin, difference, label, tone, message }
 }
 function SiteFooter(){
- return <footer><span>Comparing · Confronta meglio, scegli meglio</span><nav aria-label="Informazioni legali"><a href="/affiliazioni.html">Affiliazioni</a><a href="/privacy.html">Privacy</a></nav></footer>
+ return <footer><span>Comparing · Confronta meglio, scegli meglio</span><nav aria-label="Informazioni legali"><a href="/affiliazioni.html">Affiliazioni</a><a href="/privacy.html">Privacy</a><a href="mailto:comparing.support@gmail.com">Contatti</a></nav></footer>
 }
 
 export default function App(){
