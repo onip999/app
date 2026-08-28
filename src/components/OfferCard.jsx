@@ -7,17 +7,18 @@ function totalPrice(offer) {
   return Number(offer.price || 0) + Number(offer.shipping_cost || 0)
 }
 
-export default function OfferCard({ offer, isBest, onOpenStore }) {
+export default function OfferCard({ offer, isCheapest, isRecommended, score, onOpenStore }) {
   const store = offer.stores
   const shipping = Number(offer.shipping_cost || 0)
 
   return (
-    <article className={`offer-card ${isBest ? 'best' : ''}`}>
+    <article className={`offer-card ${isRecommended ? 'recommended' : ''}`}>
       <div className="offer-main">
         <div>
           <div className="offer-title-row">
             <h3>{store?.name || 'Negozio'}</h3>
-            {isBest && <span className="best-badge">Migliore offerta</span>}
+            {isCheapest && <span className="cheap-badge">💰 Prezzo più basso</span>}
+            {isRecommended && <span className="best-badge">⭐ Miglior acquisto</span>}
           </div>
           <p className="availability">
             {offer.availability || 'Disponibilità non indicata'}
@@ -32,6 +33,7 @@ export default function OfferCard({ offer, isBest, onOpenStore }) {
               ? ` + ${money.format(shipping)} sped.`
               : ' · spedizione inclusa'}
           </span>
+          <span className="score">Convenienza <b>{score}/10</b></span>
         </div>
       </div>
 
@@ -51,9 +53,8 @@ export default function OfferCard({ offer, isBest, onOpenStore }) {
       </div>
 
       <button className="primary-button" onClick={() => onOpenStore(offer)}>
-        Vai al negozio
+        Vai al negozio →
       </button>
     </article>
   )
 }
-
