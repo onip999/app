@@ -9,7 +9,9 @@
 </head>
 <body><div class="wrap"><a class="brand" href="/"><span class="mark">C</span>Comparing</a><main>
   <h1>Informazioni sulla privacy</h1>
-  <p class="draft">Versione preliminare: prima dell’attivazione commerciale deve essere aggiunta l’identità del gestore di Comparing.</p>
+  <p class="draft" id="identity-notice">Versione preliminare: l’identità del gestore non è al momento disponibile.</p>
+  <h2>Titolare del trattamento</h2>
+  <p>Comparing è gestito da <strong id="operator-name">gestore non indicato</strong>. Contatto: <a href="mailto:comparing.support@gmail.com">comparing.support@gmail.com</a>.</p>
   <h2>Dati trattati dall’app</h2>
   <p>Comparing non richiede registrazione. Quando selezioni un’offerta, l’app registra l’identificativo dell’offerta e la data e ora del clic per ottenere statistiche aggregate sul servizio. Non viene creato un profilo personale nell’app.</p>
   <h2>Fornitori tecnici</h2>
@@ -21,7 +23,17 @@
   <h2>Contatti</h2>
   <p>Per richieste sulla privacy, segnalazioni o assistenza puoi scrivere a <a href="mailto:comparing.support@gmail.com">comparing.support@gmail.com</a>.</p>
   <a class="back" href="/">← Torna a Comparing</a>
-</main></div></body>
+</main></div>
+<script>
+  fetch('/api/public-config')
+    .then(function (response) { return response.ok ? response.json() : null })
+    .then(function (config) {
+      if (!config || !config.operatorName) return
+      document.getElementById('operator-name').textContent = config.operatorName
+      document.getElementById('identity-notice').hidden = true
+    })
+    .catch(function () {})
+</script>
+</body>
 </html>
-
 
