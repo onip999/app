@@ -37,6 +37,9 @@ function priceInsight(product) {
   else if (difference>6) { label='Aspetta'; tone='wait'; message='Il prezzo attuale è sopra la media recente.' }
   return { current, average, historicalMin, difference, label, tone, message }
 }
+function SiteFooter(){
+ return <footer><span>Comparing · Confronta meglio, scegli meglio</span><nav aria-label="Informazioni legali"><a href="/affiliazioni.html">Affiliazioni</a><a href="/privacy.html">Privacy</a></nav></footer>
+}
 
 export default function App(){
  const [products,setProducts]=useState(sortOffers(demoProducts)),[selectedProduct,setSelectedProduct]=useState(null),[query,setQuery]=useState(''),[category,setCategory]=useState('Tutte'),[loading,setLoading]=useState(isSupabaseConfigured),[error,setError]=useState('')
@@ -60,13 +63,13 @@ export default function App(){
    {history.length>0&&<PriceHistoryChart history={history} currentPrice={offers[0]?totalPrice(offers[0]):null}/>} 
    <section><div className="section-heading"><div><p className="eyebrow">CONFRONTA DAVVERO</p><h2>Prezzo più basso e miglior acquisto</h2></div><span>{offers.length} offerte</span></div>
    {!offers.length?<div className="empty-state">Nessuna offerta disponibile.</div>:<div className="offers-list">{offers.map((offer,index)=><OfferCard key={offer.id} offer={offer} isCheapest={index===0} isRecommended={offer.id===recommendedId} score={convenienceScore(offer,offers)} onOpenStore={openStore}/>)}</div>}</section>
-  </main></div>
+  </main><SiteFooter/></div>
  }
  return <div className="app-shell"><header className="topbar"><div className="brand"><span className="brand-mark">C</span> Comparing</div><span className="demo-pill">BETA</span></header><main className="container">
   <section className="intro"><p className="eyebrow">CONFRONTA. CAPISCI. SCEGLI.</p><h1>Non trovare solo il prezzo più basso. Trova l'acquisto migliore.</h1><p>Comparing mette insieme prezzo, spedizione, reso e garanzia per mostrarti sia l'offerta più economica sia quella che conviene davvero.</p><div className="value-pills"><div><span>💰</span><strong>Prezzo più basso</strong><small>Il massimo risparmio</small></div><div><span>⭐</span><strong>Miglior acquisto</strong><small>La convenienza complessiva</small></div></div></section>
   {!isSupabaseConfigured&&<SetupNotice/>}{error&&<section className="error-state"><strong>Supabase non ha risposto correttamente.</strong><span>{error}</span><span>Sto mostrando i dati demo, quindi il sito resta utilizzabile.</span><button onClick={loadProducts}>Riprova</button></section>}
   <section className="toolbar"><input type="search" placeholder="Cerca smartphone, TV, scarpe, marca…" value={query} onChange={e=>setQuery(e.target.value)}/><select value={category} onChange={e=>setCategory(e.target.value)}>{categories.map(item=><option key={item}>{item}</option>)}</select></section>
   {loading&&<div className="empty-state">Caricamento prodotti…</div>}{!loading&&filteredProducts.length===0&&<div className="empty-state">Nessun prodotto trovato.</div>}{!loading&&<section className="product-grid">{filteredProducts.map(product=><ProductCard key={product.id} product={product} onCompare={setSelectedProduct}/>)}</section>}
- </main><footer>Comparing · Confronta meglio, scegli meglio</footer></div>
+ </main><SiteFooter/></div>
 }
 

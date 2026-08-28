@@ -94,6 +94,9 @@ export default function OfferCard({ offer, isCheapest, isRecommended, score, onO
       <button className="primary-button" onClick={() => onOpenStore(offer)}>
         Vai al negozio →
       </button>
+      <p className="affiliate-note">
+        Link affiliato: Comparing potrebbe ricevere una commissione, senza costi aggiuntivi per te.
+      </p>
     </article>
   )
 }
