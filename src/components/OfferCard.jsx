@@ -17,6 +17,7 @@ function recommendationReason(offer, isCheapest, isRecommended, cheapestTotal) {
 
 export default function OfferCard({ offer, isCheapest, isRecommended, score, cheapestTotal, onOpenStore }) {
   const store = offer.stores
+  const isAmazon = /amazon/i.test(store?.name || '')
   const shipping = Number(offer.shipping_cost || 0)
   const reason = recommendationReason(offer, isCheapest, isRecommended, cheapestTotal)
   const updatedAt = offer.updated_at ? dateTime.format(new Date(offer.updated_at)) : null
@@ -28,6 +29,6 @@ export default function OfferCard({ offer, isCheapest, isRecommended, score, che
     </div><div className="price-box"><strong>{money.format(totalPrice(offer))}</strong><span>{money.format(Number(offer.price))}{shipping>0?` + ${money.format(shipping)} sped.`:' · spedizione inclusa'}</span><span className="score">Convenienza <b>{score}/10</b></span></div></div>
     {reason&&<div className="recommendation-reason"><span>PERCHÉ CONVIENE</span><strong>{reason}</strong></div>}
     <div className="policy-grid"><div><span>↩ Reso</span><strong>{store?.return_days?`${store.return_days} giorni`:'N/D'}</strong></div><div><span>🛡 Garanzia</span><strong>{store?.warranty_months?`${store.warranty_months} mesi`:'N/D'}</strong></div><div><span>🚚 Spedizione</span><strong>{store?.shipping_notes||'N/D'}</strong></div></div>
-    <button className="primary-button" onClick={()=>onOpenStore(offer)}>Vai al negozio →</button><p className="affiliate-note">Link affiliato: Comparing potrebbe ricevere una commissione, senza costi aggiuntivi per te.</p>
+    <button className="primary-button" onClick={()=>onOpenStore(offer)}>Vai al negozio →</button><p className="affiliate-note">{isAmazon ? 'Link a pagamento Amazon: Comparing può ricevere una commissione dagli acquisti idonei.' : 'Link affiliato: Comparing potrebbe ricevere una commissione, senza costi aggiuntivi per te.'}</p>
   </article>
 }
