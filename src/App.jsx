@@ -11,7 +11,18 @@ const money=new Intl.NumberFormat('it-IT',{style:'currency',currency:'EUR'})
 const categoryIcons={Smartphone:'📱',Telefonia:'📱',Informatica:'💻',Computer:'💻',TV:'📺',Gaming:'🎮',Moda:'👟',Scarpe:'👟',Sport:'⚽',Casa:'🏠',Elettrodomestici:'🏠',Audio:'🎧'}
 const amazonAffiliateProducts={
  'JBL Tune 510BT':'https://www.amazon.it/dp/B08QTYYNDN?tag=comparing07-21',
+ 'Sony WH-CH520':'https://www.amazon.it/s?k=Sony+WH-CH520&tag=comparing07-21',
 }
+const amazonCollections=[
+ {icon:'📱',title:'Smartphone',description:'Modelli Android e iPhone',url:'https://www.amazon.it/s?k=smartphone&tag=comparing07-21'},
+ {icon:'💻',title:'Notebook',description:'Computer per studio e lavoro',url:'https://www.amazon.it/s?k=notebook&tag=comparing07-21'},
+ {icon:'🎧',title:'Cuffie',description:'Wireless, gaming e sport',url:'https://www.amazon.it/s?k=cuffie+wireless&tag=comparing07-21'},
+ {icon:'📺',title:'Smart TV',description:'Televisori 4K e accessori',url:'https://www.amazon.it/s?k=smart+tv+4k&tag=comparing07-21'},
+ {icon:'🎮',title:'Gaming',description:'Console, giochi e controller',url:'https://www.amazon.it/s?k=gaming+console+controller&tag=comparing07-21'},
+ {icon:'👟',title:'Scarpe sportive',description:'Running, palestra e lifestyle',url:'https://www.amazon.it/s?k=scarpe+sportive&tag=comparing07-21'},
+ {icon:'🏠',title:'Casa',description:'Piccoli elettrodomestici',url:'https://www.amazon.it/s?k=piccoli+elettrodomestici&tag=comparing07-21'},
+ {icon:'⌚',title:'Smartwatch',description:'Orologi e fitness tracker',url:'https://www.amazon.it/s?k=smartwatch&tag=comparing07-21'},
+]
 function totalPrice(o){return Number(o.price||0)+Number(o.shipping_cost||0)}
 function sortOffers(ps){return ps.map(p=>({...p,offers:[...(p.offers||[])].sort((a,b)=>totalPrice(a)-totalPrice(b))}))}
 function convenienceScore(o,offers){const totals=offers.map(totalPrice),min=Math.min(...totals),max=Math.max(...totals),total=totalPrice(o),priceScore=max===min?10:10-((total-min)/(max-min))*3,s=o.stores||{},r=Math.min(Number(s.return_days||0)/30,1)*1.2,w=Math.min(Number(s.warranty_months||0)/24,1)*1.2,sh=Number(o.shipping_cost||0)===0?.6:0,a=/disponibile|pronta|immediata/i.test(o.availability||'')?.4:0;return Math.min(10,Math.round((priceScore*.66+r+w+sh+a)*10)/10)}
@@ -35,6 +46,7 @@ export default function App(){
  {!isSupabaseConfigured&&<SetupNotice/>}{error&&<section className="error-state"><strong>Supabase non ha risposto correttamente.</strong><span>{error}</span><button onClick={loadProducts}>Riprova</button></section>}
  <section className="category-section"><div className="section-heading"><div><p className="eyebrow">ESPLORA</p><h2>Cosa stai cercando?</h2></div></div><div className="category-strip">{categories.filter(x=>x!=='Tutte').map(c=><button key={c} className={category===c?'active':''} onClick={()=>{setCategory(c);setShowFavorites(false)}}><span>{categoryIcons[c]||'🛍️'}</span><strong>{c}</strong></button>)}</div></section>
  <section className="highlights"><div className="highlight-card green"><span>⭐</span><div><small>IL NOSTRO METODO</small><h3>Non vince sempre chi costa meno.</h3><p>Comparing considera anche spedizione, reso e garanzia per indicarti il miglior acquisto.</p></div></div><div className="highlight-card"><span>📉</span><div><small>STORICO PREZZI</small><h3>Capisci se è il momento giusto.</h3><p>Media recente e minimo storico ti aiutano a distinguere un vero affare.</p></div></div></section>
+ <section className="amazon-section"><div className="amazon-heading"><div><p className="eyebrow">SCOPRI SU AMAZON</p><h2>Altre categorie da esplorare</h2><p>Apri la ricerca su Amazon e verifica disponibilità, prezzo e condizioni aggiornate.</p></div><span>Amazon.it</span></div><div className="amazon-grid">{amazonCollections.map(item=><a key={item.title} href={item.url} target="_blank" rel="sponsored noopener noreferrer"><span>{item.icon}</span><div><strong>{item.title}</strong><small>{item.description}</small></div><b>→</b></a>)}</div><p className="amazon-section-note">Link a pagamento. In qualità di Affiliato Amazon io ricevo un guadagno dagli acquisti idonei.</p></section>
  <section id="offerte"><div className="section-heading"><div><p className="eyebrow">{showFavorites?'I TUOI PREFERITI':'SCELTI PER TE'}</p><h2>{showFavorites?'Prodotti salvati':'Offerte e confronti'}</h2></div><select value={category} onChange={e=>{setCategory(e.target.value);setShowFavorites(false)}}>{categories.map(c=><option key={c}>{c}</option>)}</select></div>{loading&&<div className="empty-state">Caricamento prodotti…</div>}{!loading&&!filteredProducts.length&&<div className="empty-state">{showFavorites?'Non hai ancora salvato prodotti. Tocca ♡ su una card.':'Nessun prodotto trovato.'}</div>}{!loading&&<div className="product-grid">{(featured.length?filteredProducts:[]).map(p=><ProductCard key={p.id} product={p} onCompare={setSelectedProduct} isFavorite={favorites.includes(p.id)} onToggleFavorite={toggleFavorite}/>)}</div>}</section>
  <section className="ad-slot"><span>SPAZIO PUBBLICITARIO</span><p>Qui potranno comparire contenuti sponsorizzati chiaramente indicati. Non influenzeranno mai il ranking Comparing.</p></section>
  </main><SiteFooter/></div>
